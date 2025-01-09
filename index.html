@@ -10,11 +10,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: linear-gradient(to bottom, #1a4555, #2d7a9c);
             margin: 0;
             min-height: 100vh;
             color: white;
             padding: 20px;
+            background: url('/api/placeholder/1920/1080') no-repeat center center fixed;
+            background-size: cover;
         }
 
         h1 {
@@ -27,7 +28,8 @@
             position: relative;
             width: 800px;
             height: 500px;
-            background: linear-gradient(180deg, #87CEEB 0%, #4682B4 60%, #104E8B 100%);
+            background: url(m.jpg) no-repeat center center;
+            background-size: cover;
             border: 8px solid #2F4F4F;
             border-radius: 15px;
             margin: 20px;
@@ -68,75 +70,32 @@
             to { left: 100%; }
         }
 
-        .river {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(180deg, 
-                rgba(70, 130, 180, 0.8) 0%,
-                rgba(16, 78, 139, 0.9) 100%
-            );
-            animation: waterFlow 10s linear infinite;
-        }
-
-        .river:before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 20px,
-                rgba(255, 255, 255, 0.1) 20px,
-                rgba(255, 255, 255, 0.1) 40px
-            );
-            animation: waterRipple 10s linear infinite;
-        }
-
-        @keyframes waterFlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 0; }
-        }
-
-        @keyframes waterRipple {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
 
         .bank {
             position: absolute;
             bottom: 0;
-            height: 150px;
-            width: 200px;
-            background: linear-gradient(to bottom, #8B4513, #654321);
-            border-radius: 0 0 15px 15px;
+            height: 250px;
+            width: 420px;
+            background-size: contain;
+            background-position: bottom center;
+            background-repeat: no-repeat;
         }
 
         .bank.left { 
             left: 0;
             border-radius: 0 30px 15px 15px;
+            background-image: url(r.png); /* Update path */
         }
 
         .bank.right { 
             right: 0;
             border-radius: 30px 0 15px 15px;
-        }
-
-        .bank:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 20px;
-            background: linear-gradient(to bottom, #228B22, transparent);
-            border-radius: 5px 5px 0 0;
+            background-image: url(l.png); /* Update path */
         }
 
         .boat {
             position: absolute;
-            bottom: 90px;
+            bottom: 250px;
             width: 140px;
             height: 70px;
             cursor: pointer;
@@ -153,24 +112,13 @@
         .boat-visual {
             position: absolute;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #654321, #8B4513);
-            border-radius: 15px 15px 5px 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            height: 280px;
+            background: url(balon.png) no-repeat center center;
+            background-size: contain;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border: 2px solid #4a3423;
-        }
-
-        .boat::before {
-            content: '🚣';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            border-radius: 15px 15px 5px 5px;
         }
 
         .character {
@@ -183,7 +131,7 @@
             align-items: center;
             font-size: 30px;
             transition: all 0.5s ease;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.644);
             border-radius: 50%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 10;
@@ -336,11 +284,8 @@
             <div class="character food on-ground" style="left: 140px;">🍭</div>
             <div class="character dog on-ground" style="left: 200px;">🐕</div>
             <div class="stats">
-                ⏱️ Time:
-                <span id="timer">0:00</span>
-                <br>
-                🎯 Moves:
-                <span id="moves">0</span>
+                ⏱️ Time: <span id="timer">0:00</span><br>
+                🎯 Moves: <span id="moves">0</span>
             </div>
             <div class="game-over-overlay">
                 <div class="game-over-message">Game Over!</div>
@@ -350,9 +295,7 @@
         </div>
         <div class="message"></div>
         <div class="controls">
-            <p>
-                <strong>🎮 How to Play:</strong>
-            </p>
+            <p><strong>🎮 How to Play:</strong></p>
             <ul>
                 <li>👆 Click on characters to move them to/from the boat</li>
                 <li>🚣 Click on the boat to cross the river</li>
