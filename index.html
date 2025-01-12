@@ -2,271 +2,308 @@
 <html>
     <head>
         <title>Miras - River Crossing Game</title>
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
-
-        body {
-            font-family: 'Fredoka', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            min-height: 100vh;
-            color: white;
-            padding: 20px;
-            background: url('/api/placeholder/1920/1080') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        h1 {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            font-size: 2.5em;
-            margin-bottom: 30px;
-        }
-
-        .game-container {
-            position: relative;
-            width: 800px;
-            height: 500px;
-            background: url(m.jpg) no-repeat center center;
-            background-size: cover;
-            border: 8px solid #2F4F4F;
-            border-radius: 15px;
-            margin: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            animation: float linear infinite;
-        }
-
-        .cloud:before, .cloud:after {
-            content: '';
-            position: absolute;
-            background: inherit;
-            border-radius: 50%;
-        }
-
-        .cloud-1 {
-            width: 100px;
-            height: 30px;
-            top: 50px;
-            animation-duration: 30s;
-        }
-
-        .cloud-2 {
-            width: 140px;
-            height: 40px;
-            top: 80px;
-            animation-duration: 45s;
-        }
-
-        @keyframes float {
-            from { left: -200px; }
-            to { left: 100%; }
-        }
-
-
-        .bank {
-            position: absolute;
-            bottom: 0;
-            height: 250px;
-            width: 420px;
-            background-size: contain;
-            background-position: bottom center;
-            background-repeat: no-repeat;
-        }
-
-        .bank.left { 
-            left: 0;
-            border-radius: 0 30px 15px 15px;
-            background-image: url(r.png); /* Update path */
-        }
-
-        .bank.right { 
-            right: 0;
-            border-radius: 30px 0 15px 15px;
-            background-image: url(l.png); /* Update path */
-        }
-
-        .boat {
-            position: absolute;
-            bottom: 250px;
-            width: 140px;
-            height: 70px;
-            cursor: pointer;
-            transition: all 0.5s ease;
-            transform-origin: center bottom;
-            animation: boatFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes boatFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .boat-visual {
-            position: absolute;
-            width: 100%;
-            height: 280px;
-            background: url(balon.png) no-repeat center center;
-            background-size: contain;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-radius: 15px 15px 5px 5px;
-        }
-
-        .character {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            transition: all 0.5s ease;
-            background: rgba(0, 0, 0, 0.644);
-            border-radius: 50%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-        }
-
-        .character.on-ground {
-            bottom: 20px;
-            animation: floatGround 2s ease-in-out infinite;
-        }
-
-        .character.in-boat {
-            bottom: 120px;
-            animation: floatBoat 2s ease-in-out infinite;
-        }
-
-        @keyframes floatGround {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        @keyframes floatBoat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .character:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .character.eaten {
-            animation: eaten 1s forwards;
-        }
-
-        @keyframes eaten {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5) rotate(180deg); }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        .character.eating {
-            animation: eating 0.5s infinite alternate;
-        }
-
-        @keyframes eating {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.3); }
-        }
-
-        .stats {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            color: #333;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .message {
-            position: fixed;
-            top: 30px;
-            background: rgba(255, 0, 0, 0.9);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            display: none;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: messageSlide 0.5s ease-out;
-        }
-
-        @keyframes messageSlide {
-            from { transform: translateY(-100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .controls {
-            margin: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            color: #333;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            backdrop-filter: blur(5px);
-        }
-
-        .game-over-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .game-over-message {
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: #ff4444;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .restart-button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            font-family: 'Fredoka', sans-serif;
-        }
-
-        .restart-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        </style>
     </head>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap");
+
+body {
+  font-family: "Fredoka", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  color: white;
+  padding: 20px;
+  background: url("/api/placeholder/1920/1080") no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+
+.game-container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  background: url(./img/m.jpg) no-repeat center center;
+  background-size: cover;
+  border: 8px solid #2f4f4f;
+  border-radius: 15px;
+  margin: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  animation: float linear infinite;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 100px;
+  height: 30px;
+  top: 50px;
+  animation-duration: 30s;
+}
+
+.cloud-2 {
+  width: 140px;
+  height: 40px;
+  top: 80px;
+  animation-duration: 45s;
+}
+
+@keyframes float {
+  from {
+    left: -200px;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+.bank {
+  position: absolute;
+  bottom: 0;
+  height: 250px;
+  width: 420px;
+  background-size: contain;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+}
+
+.bank.left {
+  left: 0;
+  border-radius: 0 30px 15px 15px;
+  background-image: url(./img/r.png);
+}
+
+.bank.right {
+  right: 0;
+  border-radius: 30px 0 15px 15px;
+  background-image: url(./img/l.png);
+}
+
+.boat {
+  position: absolute;
+  bottom: 250px;
+  width: 140px;
+  height: 70px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  transform-origin: center bottom;
+  animation: boatFloat 3s ease-in-out infinite;
+}
+
+@keyframes boatFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.boat-visual {
+  position: absolute;
+  width: 100%;
+  height: 280px;
+  background: url(./img/balon.png) no-repeat center center;
+  background-size: contain;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 15px 15px 5px 5px;
+}
+
+.character {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  transition: all 0.5s ease;
+  background: rgba(0, 0, 0, 0.644);
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.character.on-ground {
+  bottom: 20px;
+  animation: floatGround 2s ease-in-out infinite;
+}
+
+.character.in-boat {
+  bottom: 120px;
+  animation: floatBoat 2s ease-in-out infinite;
+}
+
+@keyframes floatGround {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes floatBoat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.character:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.character.eaten {
+  animation: eaten 1s forwards;
+}
+
+@keyframes eaten {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.character.eating {
+  animation: eating 0.5s infinite alternate;
+}
+
+@keyframes eating {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.3);
+  }
+}
+
+.stats {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.message {
+  position: fixed;
+  top: 30px;
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: messageSlide 0.5s ease-out;
+}
+
+@keyframes messageSlide {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.controls {
+  margin: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  backdrop-filter: blur(5px);
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.game-over-message {
+  font-size: 36px;
+  margin-bottom: 30px;
+  color: #ff4444;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.restart-button {
+  padding: 15px 30px;
+  font-size: 20px;
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Fredoka", sans-serif;
+}
+
+.restart-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+    </style>
     <body>
-        <h1>🌊 River Crossing Adventure 🚣</h1>
+        <h1>🌊 River Crossing Adventure 🚀</h1>
         <div class="game-container">
             <div class="cloud cloud-1"></div>
             <div class="cloud cloud-2"></div>
@@ -284,8 +321,11 @@
             <div class="character food on-ground" style="left: 140px;">🍭</div>
             <div class="character dog on-ground" style="left: 200px;">🐕</div>
             <div class="stats">
-                ⏱️ Time: <span id="timer">0:00</span><br>
-                🎯 Moves: <span id="moves">0</span>
+                ⏱️ Time:
+                <span id="timer">0:00</span>
+                <br>
+                🎯 Moves:
+                <span id="moves">0</span>
             </div>
             <div class="game-over-overlay">
                 <div class="game-over-message">Game Over!</div>
@@ -295,231 +335,223 @@
         </div>
         <div class="message"></div>
         <div class="controls">
-            <p><strong>🎮 How to Play:</strong></p>
+            <p>
+                <strong>🎮 How to Play:</strong>
+            </p>
             <ul>
-                <li>👆 Click on characters to move them to/from the boat</li>
-                <li>🚣 Click on the boat to cross the river</li>
-                <li>👨‍✈️ The boat must have a driver and can carry one additional passenger</li>
-                <li>⚠️ Don't leave the dog alone with the child</li>
-                <li>🍭 Don't leave the child alone with the candy</li>
+                <li>👆 Klik pada karakter untuk memindahkannya ke/dari Balon Udara</li>
+                <li>🚀 Klik pada Balon Udara untuk menyeberangi sungai</li>
+                <li>👨‍✈️ Balon Udara harus memiliki seorang pengemudi dan dapat membawa satu penumpang tambahan</li>
+                <li>⚠️ Jangan tinggalkan anjing sendirian dengan anak kecil</li>
+                <li>🍭 Jangan tinggalkan anak kecil sendirian dengan permen</li>
             </ul>
         </div>
         <script>
-        const game = {
-            boatPosition: 'left',
-            boat: document.querySelector('.boat'),
-            characters: {
-                driver: { elem: document.querySelector('.driver'), position: 'left', inBoat: false },
-                child: { elem: document.querySelector('.child'), position: 'left', inBoat: false },
-                food: { elem: document.querySelector('.food'), position: 'left', inBoat: false },
-                dog: { elem: document.querySelector('.dog'), position: 'left', inBoat: false }
-            },
-            moves: 0,
-            startTime: Date.now(),
-            gameStarted: false
-        };
-
-        const gridPositions = {
-            left: {
-                ground: [20, 80, 140, 200],
-                boat: [60, 100]
-            },
-            right: {
-                ground: [560, 620, 680, 740],
-                boat: [580, 620]
-            }
-        };
-
-        function updateStats() {
-            if (!game.gameStarted) return;
-            const time = Math.floor((Date.now() - game.startTime) / 1000);
-            const minutes = Math.floor(time / 60);
-            const seconds = time % 60;
-            document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById('moves').textContent = game.moves;
-        }
-
-        function showMessage(text, isError = true) {
-            const message = document.querySelector('.message');
-            message.textContent = text;
-            message.style.display = 'block';
-            message.style.backgroundColor = isError ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 128, 0, 0.8)';
-            setTimeout(() => message.style.display = 'none', 3000);
-        }
-
-        function gameOver(message) {
-            const overlay = document.querySelector('.game-over-overlay');
-            const details = document.querySelector('.game-over-details');
-            details.textContent = message;
-            overlay.style.display = 'flex';
-            game.gameStarted = false;
-        }
-
-        function restartGame() {
-            Object.values(game.characters).forEach(char => {
-                char.position = 'left';
-                char.inBoat = false;
-                char.elem.classList.remove('eaten', 'eating', 'in-boat');
-                char.elem.classList.add('on-ground');
-                char.elem.style.opacity = '1';
-                char.elem.style.transform = 'none';
-                updateCharacterPosition(char);
-            });
-
-            game.boatPosition = 'left';
-            game.boat.style.left = '40px';
-
-            game.moves = 0;
-            game.startTime = Date.now();
-            game.gameStarted = true;
-
-            document.querySelector('.game-over-overlay').style.display = 'none';
-            
-            updateStats();
-        }
-
-        function animateViolation(victim, attacker, message) {
-            victim.elem.classList.add('eaten');
-            attacker.elem.classList.add('eating');
-            setTimeout(() => {
-                gameOver(message);
-            }, 1000);
-        }
-
-        function checkViolations() {
-            const leftBank = Object.entries(game.characters)
-                .filter(([_, char]) => char.position === 'left' && !char.inBoat);
-            const rightBank = Object.entries(game.characters)
-                .filter(([_, char]) => char.position === 'right' && !char.inBoat);
-
-            function checkBank(chars) {
-                const charDict = Object.fromEntries(chars);
-                
-                if (charDict.child && charDict.dog && !charDict.driver) {
-                    animateViolation(
-                        game.characters.child,
-                        game.characters.dog,
-                        "The baby was eaten by the dog! 😱"
-                    );
-                    return false;
-                }
-                
-                if (charDict.child && charDict.food && !charDict.driver) {
-                    animateViolation(
-                        game.characters.food,
-                        game.characters.child,
-                        "The baby ate the candy and got sick! 🤒"
-                    );
-                    return false;
-                }
-                
-                return true;
-            }
-
-            return checkBank(leftBank) && checkBank(rightBank);
-        }
-
-        function checkWin() {
-            const allOnRight = Object.values(game.characters)
-                .every(char => char.position === 'right');
-            if (allOnRight) {
-                showMessage('Congratulations! You won! 🎉', false);
-                return true;
-            }
-            return false;
-        }
-
-        function updateCharacterPosition(character) {
-            const chars = Object.values(game.characters);
-            if (character.inBoat) {
-                character.elem.classList.remove('on-ground');
-                character.elem.classList.add('in-boat');
-                const boatIndex = chars.filter(c => c.inBoat).indexOf(character);
-                const boatPositions = gridPositions[game.boatPosition].boat;
-                character.elem.style.left = `${boatPositions[boatIndex]}px`;
-            } else {
-                character.elem.classList.remove('in-boat');
-                character.elem.classList.add('on-ground');
-                const bankChars = chars.filter(c => 
-                    c.position === character.position && !c.inBoat
-                );
-                const index = bankChars.indexOf(character);
-                const positions = gridPositions[character.position].ground;
-                character.elem.style.left = `${positions[index]}px`;
-            }
-        }
-
-        function moveBoat() {
-            if (!game.gameStarted) {
-                game.gameStarted = true;
-                game.startTime = Date.now();
-            }
-
-            const boatPassengers = Object.values(game.characters)
-                .filter(char => char.inBoat);
-
-            if (!boatPassengers.includes(game.characters.driver)) {
-                showMessage('The boat needs a driver!');
-                return;
-            }
-
-            if (boatPassengers.length > 2) {
-                showMessage('Too many passengers in the boat!');
-                return;
-            }
-
-            game.boatPosition = game.boatPosition === 'left' ? 'right' : 'left';
-            game.boat.style.left = game.boatPosition === 'left' ? '40px' : '560px';
-
-            boatPassengers.forEach(char => {
-                char.position = game.boatPosition;
-                updateCharacterPosition(char);
-            });
-
-            game.moves++;
-            updateStats();
-            if (!checkViolations()) {
-                return;
-            }
-
-            checkWin();
-        }
-
-        function toggleCharacterInBoat(character) {
-            if (!game.gameStarted) {
-                game.gameStarted = true;
-                game.startTime = Date.now();
-            }
-
-            if (character.position !== game.boatPosition) return;
-
-            const boatPassengers = Object.values(game.characters)
-                .filter(char => char.inBoat);
-
-            if (!character.inBoat && boatPassengers.length >= 2) {
-                showMessage('The boat is full!');
-                return;
-            }
-
-            character.inBoat = !character.inBoat;
-            updateCharacterPosition(character);
-            
-            Object.values(game.characters)
-                .filter(char => char.position === character.position && !char.inBoat)
-                .forEach(char => updateCharacterPosition(char));
-
-            game.moves++;
-            updateStats();
-        }
-
-        game.boat.addEventListener('click', moveBoat);
-        Object.values(game.characters).forEach(character => {
-            character.elem.addEventListener('click', () => toggleCharacterInBoat(character));
-        });
-        
-        document.querySelector('.restart-button').addEventListener('click', restartGame);
-
-        setInterval(updateStats, 1000);
-        </script>
-    </body>
-</html>
+          const game = {
+              boatPosition: 'left', // Posisi awal Balon Udara di sisi kiri
+              boat: document.querySelector('.boat'), // Elemen Balon Udara
+              characters: {
+                  driver: { elem: document.querySelector('.driver'), position: 'left', inBoat: false }, // Karakter pengemudi
+                  child: { elem: document.querySelector('.child'), position: 'left', inBoat: false }, // Karakter anak kecil
+                  food: { elem: document.querySelector('.food'), position: 'left', inBoat: false }, // Objek makanan
+                  dog: { elem: document.querySelector('.dog'), position: 'left', inBoat: false } // Karakter anjing
+              },
+              moves: 0, // Jumlah langkah yang dilakukan pemain
+              startTime: Date.now(), // Waktu mulai permainan
+              gameStarted: false // Status apakah permainan telah dimulai
+          };
+      
+          const gridPositions = {
+              left: {
+                  ground: [20, 80, 140, 200], // Posisi karakter di tanah (sisi kiri)
+                  boat: [60, 100] // Posisi karakter di Balon Udara (sisi kiri)
+              },
+              right: {
+                  ground: [560, 620, 680, 740], // Posisi karakter di tanah (sisi kanan)
+                  boat: [580, 620] // Posisi karakter di Balon Udara (sisi kanan)
+              }
+          };
+      
+          // Fungsi untuk memperbarui statistik permainan (waktu & langkah)
+          function updateStats() {
+              if (!game.gameStarted) return;
+              const time = Math.floor((Date.now() - game.startTime) / 1000); // Hitung waktu sejak permainan dimulai
+              const minutes = Math.floor(time / 60); // Hitung menit
+              const seconds = time % 60; // Hitung detik
+              document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+              document.getElementById('moves').textContent = game.moves;
+          }
+      
+          // Fungsi untuk menampilkan pesan (kesalahan atau keberhasilan)
+          function showMessage(text, isError = true) {
+              const message = document.querySelector('.message');
+              message.textContent = text; // Tampilkan pesan
+              message.style.display = 'block'; // Tampilkan elemen pesan
+              message.style.backgroundColor = isError ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 128, 0, 0.8)'; // Warna latar belakang pesan
+              setTimeout(() => message.style.display = 'none', 3000); // Sembunyikan pesan setelah 3 detik
+          }
+      
+          // Fungsi untuk mengakhiri permainan
+          function gameOver(message) {
+              const overlay = document.querySelector('.game-over-overlay'); // Overlay akhir permainan
+              const details = document.querySelector('.game-over-details'); // Pesan akhir permainan
+              details.textContent = message;
+              overlay.style.display = 'flex';
+              game.gameStarted = false; // Matikan permainan
+          }
+      
+          // Fungsi untuk memulai ulang permainan
+          function restartGame() {
+              Object.values(game.characters).forEach(char => {
+                  char.position = 'left'; // Reset posisi ke sisi kiri
+                  char.inBoat = false; // Reset status di Balon Udara
+                  char.elem.classList.remove('eaten', 'eating', 'in-boat'); // Hapus semua kelas
+                  char.elem.classList.add('on-ground'); // Tambahkan kelas di tanah
+                  char.elem.style.opacity = '1'; 
+                  char.elem.style.transform = 'none'; 
+                  updateCharacterPosition(char); // Perbarui posisi karakter
+              });
+      
+              game.boatPosition = 'left'; // Reset posisi Balon Udara ke sisi kiri
+              game.boat.style.left = '40px'; // Reset posisi Balon Udara
+              game.moves = 0; // Reset langkah
+              game.startTime = Date.now(); // Reset waktu mulai
+              game.gameStarted = true; // Set status permainan dimulai
+              document.querySelector('.game-over-overlay').style.display = 'none'; // Sembunyikan overlay akhir
+              updateStats(); // Perbarui statistik
+          }
+      
+          // Fungsi untuk memeriksa pelanggaran aturan permainan
+          function checkViolations() {
+              // Pisahkan karakter berdasarkan posisi mereka
+              const leftBank = Object.entries(game.characters)
+                  .filter(([_, char]) => char.position === 'left' && !char.inBoat);
+              const rightBank = Object.entries(game.characters)
+                  .filter(([_, char]) => char.position === 'right' && !char.inBoat);
+      
+              // Fungsi untuk memeriksa pelanggaran pada setiap sisi
+              function checkBank(chars) {
+                  const charDict = Object.fromEntries(chars);
+      
+                  if (charDict.child && charDict.dog && !charDict.driver) {
+                      animateViolation(game.characters.child, game.characters.dog, "Anak dimakan anjing! 😱");
+                      return false;
+                  }
+      
+                  if (charDict.child && charDict.food && !charDict.driver) {
+                      animateViolation(game.characters.food, game.characters.child, "Anak memakan permen dan sakit! 🤒");
+                      return false;
+                  }
+      
+                  return true; // Tidak ada pelanggaran
+              }
+      
+              return checkBank(leftBank) && checkBank(rightBank);
+          }
+      
+          // Fungsi untuk memeriksa apakah permainan sudah menang
+          function checkWin() {
+              const allOnRight = Object.values(game.characters).every(char => char.position === 'right');
+              if (allOnRight) {
+                  showMessage('Selamat! Anda menang! 🎉', false);
+                  return true;
+              }
+              return false;
+          }
+      
+          // Fungsi untuk memperbarui posisi karakter
+          function updateCharacterPosition(character) {
+              const chars = Object.values(game.characters);
+              if (character.inBoat) {
+                  character.elem.classList.remove('on-ground'); 
+                  character.elem.classList.add('in-boat'); 
+                  const boatIndex = chars.filter(c => c.inBoat).indexOf(character); 
+                  const boatPositions = gridPositions[game.boatPosition].boat; 
+                  character.elem.style.left = `${boatPositions[boatIndex]}px`;
+              } else {
+                  character.elem.classList.remove('in-boat'); 
+                  character.elem.classList.add('on-ground'); 
+                  const bankChars = chars.filter(c => 
+                      c.position === character.position && !c.inBoat
+                  );
+                  const index = bankChars.indexOf(character);
+                  const positions = gridPositions[character.position].ground;
+                  character.elem.style.left = `${positions[index]}px`;
+              }
+          }
+      
+          // Fungsi untuk memindahkan Balon Udara
+          function moveBoat() {
+              if (!game.gameStarted) {
+                  game.gameStarted = true;
+                  game.startTime = Date.now();
+              }
+      
+              const boatPassengers = Object.values(game.characters)
+                  .filter(char => char.inBoat);
+      
+              if (!boatPassengers.includes(game.characters.driver)) {
+                  showMessage('Balon Udara membutuhkan pengemudi!');
+                  return;
+              }
+      
+              if (boatPassengers.length > 2) {
+                  showMessage('Terlalu banyak penumpang di Balon Udara!');
+                  return;
+              }
+      
+              game.boatPosition = game.boatPosition === 'left' ? 'right' : 'left';
+              game.boat.style.left = game.boatPosition === 'left' ? '40px' : '560px';
+      
+              boatPassengers.forEach(char => {
+                  char.position = game.boatPosition;
+                  updateCharacterPosition(char);
+              });
+      
+              game.moves++;
+              updateStats();
+              if (!checkViolations()) {
+                  return;
+              }
+      
+              checkWin();
+          }
+      
+          // Fungsi untuk menambah/menghapus karakter dari Balon Udara
+          function toggleCharacterInBoat(character) {
+              if (!game.gameStarted) {
+                  game.gameStarted = true;
+                  game.startTime = Date.now();
+              }
+      
+              if (character.position !== game.boatPosition) return;
+      
+              const boatPassengers = Object.values(game.characters)
+                  .filter(char => char.inBoat);
+      
+              if (!character.inBoat && boatPassengers.length >= 2) {
+                  showMessage('Balon Udara penuh!');
+                  return;
+              }
+      
+              character.inBoat = !character.inBoat;
+              updateCharacterPosition(character);
+              
+              Object.values(game.characters)
+                  .filter(char => char.position === character.position && !char.inBoat)
+                  .forEach(char => updateCharacterPosition(char));
+      
+              game.moves++;
+              updateStats();
+          }
+      
+          game.boat.addEventListener('click', moveBoat);
+          Object.values(game.characters).forEach(character => {
+              character.elem.addEventListener('click', () => toggleCharacterInBoat(character));
+          });
+          
+          document.querySelector('.restart-button').addEventListener('click', restartGame);
+      
+          setInterval(updateStats, 1000); // Perbarui statistik setiap 1 detik
+      </script>
+      

@@ -1,0 +1,297 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap");
+
+body {
+  font-family: "Fredoka", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  color: white;
+  padding: 20px;
+  background: url("/api/placeholder/1920/1080") no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+
+.game-container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  background: url(./img/m.jpg) no-repeat center center;
+  background-size: cover;
+  border: 8px solid #2f4f4f;
+  border-radius: 15px;
+  margin: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  animation: float linear infinite;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 100px;
+  height: 30px;
+  top: 50px;
+  animation-duration: 30s;
+}
+
+.cloud-2 {
+  width: 140px;
+  height: 40px;
+  top: 80px;
+  animation-duration: 45s;
+}
+
+@keyframes float {
+  from {
+    left: -200px;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+.bank {
+  position: absolute;
+  bottom: 0;
+  height: 250px;
+  width: 420px;
+  background-size: contain;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+}
+
+.bank.left {
+  left: 0;
+  border-radius: 0 30px 15px 15px;
+  background-image: url(./img/r.png);
+}
+
+.bank.right {
+  right: 0;
+  border-radius: 30px 0 15px 15px;
+  background-image: url(./img/l.png);
+}
+
+.boat {
+  position: absolute;
+  bottom: 250px;
+  width: 140px;
+  height: 70px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  transform-origin: center bottom;
+  animation: boatFloat 3s ease-in-out infinite;
+}
+
+@keyframes boatFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.boat-visual {
+  position: absolute;
+  width: 100%;
+  height: 280px;
+  background: url(./img/balon.png) no-repeat center center;
+  background-size: contain;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 15px 15px 5px 5px;
+}
+
+.character {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  transition: all 0.5s ease;
+  background: rgba(0, 0, 0, 0.644);
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.character.on-ground {
+  bottom: 20px;
+  animation: floatGround 2s ease-in-out infinite;
+}
+
+.character.in-boat {
+  bottom: 120px;
+  animation: floatBoat 2s ease-in-out infinite;
+}
+
+@keyframes floatGround {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes floatBoat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.character:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.character.eaten {
+  animation: eaten 1s forwards;
+}
+
+@keyframes eaten {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.character.eating {
+  animation: eating 0.5s infinite alternate;
+}
+
+@keyframes eating {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.3);
+  }
+}
+
+.stats {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.message {
+  position: fixed;
+  top: 30px;
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: messageSlide 0.5s ease-out;
+}
+
+@keyframes messageSlide {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.controls {
+  margin: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  backdrop-filter: blur(5px);
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.game-over-message {
+  font-size: 36px;
+  margin-bottom: 30px;
+  color: #ff4444;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.restart-button {
+  padding: 15px 30px;
+  font-size: 20px;
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Fredoka", sans-serif;
+}
+
+.restart-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
